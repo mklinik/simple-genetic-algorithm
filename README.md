@@ -1,3 +1,11 @@
+A port of the simple-genetic-algorithm library to the Clean programming language.
+
+The port does not support parallelism.
+
+Original README follows.
+
+
+
 simple-genetic-algorithm
 ========================
 
