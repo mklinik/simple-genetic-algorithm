@@ -49,7 +49,7 @@ zeroGeneration initGen rnd ps =
 
 nextGeneration ::
   RandomInts  // ^ Random number generator
-  [a]         // ^ Current generation
+  ![a]         // ^ Current generation
   Int         // ^ Population size
   Real        // ^ Mutation probability
   -> ([a], RandomInts) // ^ Next generation ordered by fitness (best - first) and new RNG
