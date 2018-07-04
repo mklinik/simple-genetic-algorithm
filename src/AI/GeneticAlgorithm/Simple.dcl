@@ -3,13 +3,13 @@ definition module AI.GeneticAlgorithm.Simple
 import AI.GeneticAlgorithm.RandomUtil
 
 // | Chromosome interface
-class Chromosome a where
+class Chromosome problem a where
   // | Crossover function
-  crossover :: RandomInts a a -> ([a], RandomInts)
+  crossover :: RandomInts problem a a -> ([a], RandomInts)
   // | Mutation function
-  mutation :: RandomInts a -> (a, RandomInts)
+  mutation :: RandomInts problem a -> (a, RandomInts)
   // | Fitness function. fitness x > fitness y means that x is better than y
-  fitness :: a -> Real
+  fitness :: problem a -> Real
 
 
 runGA ::
@@ -18,5 +18,6 @@ runGA ::
   Real              // ^ Mutation probability [0, 1]
   (RandomInts -> (a, RandomInts)) // ^ Random chromosome generator (hint: use currying or closures)
   (a Int -> Bool)   // ^ Stopping criteria, 1st arg - best chromosome, 2nd arg - generation number
+  b                 // ^ Problem instance
   -> a              // ^ Best chromosome
-  | Chromosome a
+  | Chromosome b a
