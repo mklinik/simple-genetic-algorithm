@@ -1,6 +1,6 @@
 definition module AI.GeneticAlgorithm.Simple
 
-import AI.GeneticAlgorithm.RandomUtil
+from AI.GeneticAlgorithm.RandomUtil import :: RandomInts
 
 // | Chromosome interface
 class Chromosome problem a where
