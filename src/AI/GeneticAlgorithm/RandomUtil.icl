@@ -14,4 +14,4 @@ where
   mag = hi - lo
   r = rand rem mag
   r_ = if (r < 0) (r + mag) r
-  result = r + lo
+  result = if (mag == 0) lo (r + lo)
