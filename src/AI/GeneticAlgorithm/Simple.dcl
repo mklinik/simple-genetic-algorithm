@@ -1,5 +1,6 @@
 definition module AI.GeneticAlgorithm.Simple
 
+from Data.Either import :: Either
 from AI.GeneticAlgorithm.RandomUtil import :: RandomInts
 
 // | Chromosome interface
@@ -9,7 +10,9 @@ class Chromosome problem chromosome where
   // | Mutation function
   mutation :: RandomInts problem chromosome -> (chromosome, RandomInts)
   // | Fitness function. fitness x > fitness y means that x is better than y
-  fitness :: problem chromosome -> Real
+  // | Lefts are always worse than Rigts. Lefts are meant to represent fitness for invalid
+  // | chromosomes.
+  fitness :: problem chromosome -> Either Real Real
 
 
 runGA ::

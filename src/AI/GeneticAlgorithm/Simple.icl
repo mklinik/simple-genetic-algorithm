@@ -1,5 +1,6 @@
 implementation module AI.GeneticAlgorithm.Simple
 
+import Data.Either
 import StdInt
 import Data.List
 import StdEnum
@@ -71,7 +72,7 @@ nextGeneration gen pop ps mp problem =
                 ]
             (_, []) -> abort "empty chunk")
         chunks
-    lst = take ps $ sortBy (\(_, fx) (_, fy) -> fy < fx) $ 'F'.concat results
+    lst = take ps $ sortBy (\(_, fx) (_, fy) -> compareFitness fy fx) $ 'F'.concat results
   in ( map fst lst, gen_ )
 
 nextGeneration_ [] _ _ acc _ = acc
@@ -84,6 +85,11 @@ nextGeneration_ [(p1,p2):ps] g0 mp acc problem =
         ([],g1) children0
   in
   nextGeneration_ ps g2 mp (children1 ++ acc) problem
+
+compareFitness (Left x) (Left y) = x < y
+compareFitness (Left _) (Right _) = True
+compareFitness (Right _) (Left _) = False
+compareFitness (Right x) (Right y) = x < y
 
 mutate :: RandomInts b a Real -> (a, RandomInts) | Chromosome b a
 mutate [rand:rands] problem x mp =
