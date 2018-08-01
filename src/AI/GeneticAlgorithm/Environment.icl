@@ -1,3 +1,3 @@
-implementation module Environment
+implementation module AI.GeneticAlgorithm.Environment
 
 import Text.GenJSON

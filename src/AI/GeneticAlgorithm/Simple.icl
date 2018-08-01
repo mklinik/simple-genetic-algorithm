@@ -14,6 +14,7 @@ import Data.Maybe
 import StdMisc
 
 import AI.GeneticAlgorithm.RandomUtil
+import AI.GeneticAlgorithm.Environment
 
 runGA ::
   RandomInts        // ^ Random number generator
@@ -22,19 +23,20 @@ runGA ::
   (RandomInts -> (a, RandomInts)) // ^ Random chromosome generator (hint: use currying or closures)
   (a Int -> Bool)   // ^ Stopping criteria, 1st arg - best chromosome, 2nd arg - generation number
   b                 // ^ Problem instance
+  Environment       // ^ environment
   -> a              // ^ Best chromosome
   | Chromosome b a
-runGA gen ps mp rnd stopf problem =
+runGA gen ps mp rnd stopf problem env =
   let (pop, gen_) = zeroGeneration gen rnd ps in
-  runGA_ gen_ pop ps mp stopf 0 problem
+  runGA_ gen_ pop ps mp stopf 0 problem env
 
-runGA_ :: RandomInts [a] Int Real (a Int -> Bool) Int b -> a | Chromosome b a
-runGA_ gen pop ps mp stopf gnum problem =
+runGA_ :: RandomInts [a] Int Real (a Int -> Bool) Int b Environment -> a | Chromosome b a
+runGA_ gen pop ps mp stopf gnum problem env =
   let best = head pop in
   if (stopf best gnum)
     (best)
-    (let (pop_, gen_) = nextGeneration gen pop ps mp problem in
-     runGA_ gen_ pop_ ps mp stopf (gnum+1) problem
+    (let (pop_, gen_) = nextGeneration gen pop ps mp problem env in
+     runGA_ gen_ pop_ ps mp stopf (gnum+1) problem env
     )
 
 // | Generate zero generation. Use this function only if you are going to implement your own runGA.
@@ -55,9 +57,10 @@ nextGeneration ::
   Int         // ^ Population size
   Real        // ^ Mutation probability
   b           // ^ Problem instance
+  Environment // ^ Environment
   -> ([a], RandomInts) // ^ Next generation ordered by fitness (best - first) and new RNG
   | Chromosome b a
-nextGeneration gen pop ps mp problem =
+nextGeneration gen pop ps mp problem env =
   let
     (gen_, gens) = case unfoldr (Just o split) gen of
       [g:gs] -> (g, gs)
@@ -67,7 +70,7 @@ nextGeneration gen pop ps mp problem =
       map
         (\x -> case x of
             (g, [x:ys]) ->
-                [ (t, fitness problem t)
+                [ (t, fitness problem env t)
                 \\ t <- nextGeneration_ [ (x, y) \\ y <- ys ] g mp [] problem
                 ]
             (_, []) -> abort "empty chunk")

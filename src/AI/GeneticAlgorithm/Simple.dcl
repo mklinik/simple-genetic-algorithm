@@ -1,5 +1,6 @@
 definition module AI.GeneticAlgorithm.Simple
 
+from AI.GeneticAlgorithm.Environment import :: Environment, :: JSONNode
 from Data.Either import :: Either
 from AI.GeneticAlgorithm.RandomUtil import :: RandomInts
 
@@ -12,7 +13,7 @@ class Chromosome problem chromosome where
   // | Fitness function. fitness x > fitness y means that x is better than y
   // | Lefts are always worse than Rigts. Lefts are meant to represent fitness for invalid
   // | chromosomes.
-  fitness :: problem chromosome -> Either Real Real
+  fitness :: problem Environment chromosome -> Either Real Real
 
 
 runGA ::
@@ -22,5 +23,6 @@ runGA ::
   (RandomInts -> (a, RandomInts)) // ^ Random chromosome generator (hint: use currying or closures)
   (a Int -> Bool)   // ^ Stopping criteria, 1st arg - best chromosome, 2nd arg - generation number
   b                 // ^ Problem instance
+  Environment       // ^ Environment
   -> a              // ^ Best chromosome
   | Chromosome b a
