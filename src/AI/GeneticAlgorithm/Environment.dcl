@@ -7,3 +7,5 @@ from Text.GenJSON import :: JSONNode
 :: Environment :== JSONNode
 
 readEnvironment :: FilePath *World -> ((Environment, Bool), *World)
+
+emptyEnvironment :: Environment

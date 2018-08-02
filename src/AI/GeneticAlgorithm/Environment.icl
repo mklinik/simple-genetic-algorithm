@@ -15,3 +15,6 @@ readEnvironment fileName world
   # (str, file)       = freads file 16777216
   # (ok, world)       = fclose file world
   = ((fromString str, True), world)
+
+emptyEnvironment :: Environment
+emptyEnvironment = JSONNull
