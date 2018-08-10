@@ -24,17 +24,17 @@ runGA ::
   (a Int -> Bool)   // ^ Stopping criteria, 1st arg - best chromosome, 2nd arg - generation number
   b                 // ^ Problem instance
   Environment       // ^ environment
-  -> a              // ^ Best chromosome
+  -> [a]            // ^ Best chromosome
   | Chromosome b a
 runGA gen ps mp rnd stopf problem env =
   let (pop, gen_) = zeroGeneration gen rnd ps in
   runGA_ gen_ pop ps mp stopf 0 problem env
 
-runGA_ :: RandomInts [a] Int Real (a Int -> Bool) Int b Environment -> a | Chromosome b a
+runGA_ :: RandomInts [a] Int Real (a Int -> Bool) Int b Environment -> [a] | Chromosome b a
 runGA_ gen pop ps mp stopf gnum problem env =
   let best = head pop in
   if (stopf best gnum)
-    (best)
+    (pop)
     (let (pop_, gen_) = nextGeneration gen pop ps mp problem env in
      runGA_ gen_ pop_ ps mp stopf (gnum+1) problem env
     )

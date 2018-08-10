@@ -24,5 +24,5 @@ runGA ::
   (a Int -> Bool)   // ^ Stopping criteria, 1st arg - best chromosome, 2nd arg - generation number
   b                 // ^ Problem instance
   Environment       // ^ Environment
-  -> a              // ^ Best chromosome
+  -> [a]            // ^ Best chromosome
   | Chromosome b a
