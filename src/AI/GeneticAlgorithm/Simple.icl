@@ -76,7 +76,7 @@ nextGeneration gen pop ps mp problem env =
             (_, []) -> abort "empty chunk")
         chunks
     lst = take ps $ sortBy (\(_, fx) (_, fy) -> compareFitness fy fx) $ 'F'.concat results
-  in ( map fst lst, gen_ )
+  in ( nub $ map fst lst, gen_ )
 
 nextGeneration_ [] _ _ acc _ = acc
 nextGeneration_ [(p1,p2):ps] g0 mp acc problem =

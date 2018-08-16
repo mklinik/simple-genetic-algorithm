@@ -5,7 +5,7 @@ from Data.Either import :: Either
 from AI.GeneticAlgorithm.RandomUtil import :: RandomInts
 
 // | Chromosome interface
-class Chromosome problem chromosome where
+class Chromosome problem chromosome | == chromosome where
   // | Crossover function
   crossover :: RandomInts problem chromosome chromosome -> ([chromosome], RandomInts)
   // | Mutation function
