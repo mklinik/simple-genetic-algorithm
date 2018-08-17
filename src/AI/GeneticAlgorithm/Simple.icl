@@ -2,6 +2,7 @@ implementation module AI.GeneticAlgorithm.Simple
 
 import Data.Either
 import StdInt
+import StdString
 import Data.List
 import StdEnum
 import qualified Data.Foldable as F
@@ -15,6 +16,10 @@ import StdMisc
 
 import AI.GeneticAlgorithm.RandomUtil
 import AI.GeneticAlgorithm.Environment
+
+instance toString Objective where
+  toString (Maximize x) = "⬆ " +++ toString x
+  toString (Minimize x) = "⬇ " +++ toString x
 
 runGA ::
   RandomInts        // ^ Random number generator

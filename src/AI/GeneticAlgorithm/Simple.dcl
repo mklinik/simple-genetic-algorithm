@@ -6,6 +6,8 @@ from AI.GeneticAlgorithm.RandomUtil import :: RandomInts
 
 :: Objective = Maximize Real | Minimize Real
 
+instance toString Objective
+
 // | Chromosome interface
 class Chromosome problem chromosome | == chromosome where
   // | Crossover function
