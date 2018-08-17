@@ -90,10 +90,13 @@ nextGeneration_ [(p1,p2):ps] g0 mp acc problem =
   in
   nextGeneration_ ps g2 mp (children1 ++ acc) problem
 
+// Implements less-than.
+// Yields True if x is worse than y
+// Yields False if x is better than y
 compareFitness (Left x) (Left y) = x < y
 compareFitness (Left _) (Right _) = True
 compareFitness (Right _) (Left _) = False
-compareFitness (Right x) (Right y) = x < y
+compareFitness (Right x) (Right y) = weightedProduct x y < 1.0
 
 mutate :: RandomInts b a Real -> (a, RandomInts) | Chromosome b a
 mutate [rand:rands] problem x mp =
@@ -101,3 +104,9 @@ mutate [rand:rands] problem x mp =
   if (r <= mp)
     (mutation rands problem x)
     (x, rands)
+
+weightedProduct :: [Objective] [Objective] -> Real
+weightedProduct [] [] = 1.0
+weightedProduct [Maximize x : xs] [Maximize y : ys] = (x / y) * weightedProduct xs ys
+weightedProduct [Minimize x : xs] [Minimize y : ys] = (y / x) * weightedProduct xs ys
+weightedProduct _ _ = abort "weightedProduct: inconsistent objective lists"

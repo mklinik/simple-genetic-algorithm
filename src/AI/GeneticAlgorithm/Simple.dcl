@@ -4,6 +4,8 @@ from AI.GeneticAlgorithm.Environment import :: Environment, :: JSONNode
 from Data.Either import :: Either
 from AI.GeneticAlgorithm.RandomUtil import :: RandomInts
 
+:: Objective = Maximize Real | Minimize Real
+
 // | Chromosome interface
 class Chromosome problem chromosome | == chromosome where
   // | Crossover function
@@ -13,7 +15,19 @@ class Chromosome problem chromosome | == chromosome where
   // | Fitness function. fitness x > fitness y means that x is better than y
   // | Lefts are always worse than Rigts. Lefts are meant to represent fitness for invalid
   // | chromosomes.
-  fitness :: problem Environment chromosome -> Either Real Real
+  fitness :: problem Environment chromosome -> Either Real [Objective]
+
+
+// Calculates the weighted product ratio. See
+// https://en.wikipedia.org/wiki/Weighted_product_model
+//
+// Left is better than right if the weighted product is > 1
+// Left is worse than right if the weighted product is < 1
+//
+// No weights yet, despite the name.
+//
+// The two objective lists must have the same length, and the same objectives at the same indices.
+weightedProduct :: [Objective] [Objective] -> Real
 
 
 runGA ::
