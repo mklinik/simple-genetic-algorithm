@@ -66,6 +66,7 @@ nextGeneration gen pop ps mp problem env =
       [g:gs] -> (g, gs)
       []     -> abort "empty gens"
     chunks = zip2 gens $ init $ tails pop
+    oldPop = map (\t -> (t, fitness problem env t)) pop
     results =
       map
         (\x -> case x of
@@ -75,7 +76,7 @@ nextGeneration gen pop ps mp problem env =
                 ]
             (_, []) -> abort "empty chunk")
         chunks
-    lst = take ps $ sortBy (\(_, fx) (_, fy) -> compareFitness fy fx) $ 'F'.concat results
+    lst = take ps $ sortBy (\(_, fx) (_, fy) -> compareFitness fy fx) $ 'F'.concat results ++ oldPop
   in ( nub $ map fst lst, gen_ )
 
 nextGeneration_ [] _ _ acc _ = acc
