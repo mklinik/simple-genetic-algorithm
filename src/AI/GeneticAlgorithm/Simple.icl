@@ -93,7 +93,7 @@ nextGeneration_ [(p1,p2):ps] g0 mp acc problem =
 // Implements less-than.
 // Yields True if x is worse than y
 // Yields False if x is better than y
-compareFitness (Left x) (Left y) = x < y
+compareFitness (Left x) (Left y) = weightedProduct x y < 1.0
 compareFitness (Left _) (Right _) = True
 compareFitness (Right _) (Left _) = False
 compareFitness (Right x) (Right y) = weightedProduct x y < 1.0

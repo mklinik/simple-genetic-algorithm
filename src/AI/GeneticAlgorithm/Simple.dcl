@@ -15,7 +15,7 @@ class Chromosome problem chromosome | == chromosome where
   // | Fitness function. fitness x > fitness y means that x is better than y
   // | Lefts are always worse than Rigts. Lefts are meant to represent fitness for invalid
   // | chromosomes.
-  fitness :: problem Environment chromosome -> Either Real [Objective]
+  fitness :: problem Environment chromosome -> Either [Objective] [Objective]
 
 
 // Calculates the weighted product ratio. See
