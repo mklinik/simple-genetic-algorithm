@@ -4,7 +4,7 @@ from AI.GeneticAlgorithm.Environment import :: Environment, :: JSONNode
 from Data.Either import :: Either
 from AI.GeneticAlgorithm.RandomUtil import :: RandomInts
 
-:: Objective = Maximize Real | Minimize Real
+:: Objective = Maximize Real | Minimize Real | Undefined
 
 instance toString Objective
 

@@ -20,6 +20,7 @@ import AI.GeneticAlgorithm.Environment
 instance toString Objective where
   toString (Maximize x) = "⬆ " +++ toString x
   toString (Minimize x) = "⬇ " +++ toString x
+  toString Undefined = "?"
 
 runGA ::
   RandomInts        // ^ Random number generator
@@ -114,4 +115,5 @@ weightedProduct :: [Objective] [Objective] -> Real
 weightedProduct [] [] = 1.0
 weightedProduct [Maximize x : xs] [Maximize y : ys] = (x / y) * weightedProduct xs ys
 weightedProduct [Minimize x : xs] [Minimize y : ys] = (y / x) * weightedProduct xs ys
+weightedProduct [Undefined : xs] [Undefined : ys] = weightedProduct xs ys
 weightedProduct _ _ = abort "weightedProduct: inconsistent objective lists"
