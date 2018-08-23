@@ -5,6 +5,7 @@ from Data.Either import :: Either
 from AI.GeneticAlgorithm.RandomUtil import :: RandomInts
 
 :: Objective = Maximize Real | Minimize Real | Undefined
+:: Weight :== Real
 
 instance toString Objective
 
@@ -18,6 +19,9 @@ class Chromosome problem chromosome | == chromosome where
   // | Lefts are always worse than Rigts. Lefts are meant to represent fitness for invalid
   // | chromosomes.
   fitness :: problem Environment chromosome -> Either [Objective] [Objective]
+  // | The weights for the objectives. Use repeat 1.0 if not used. Chromosome is an unused
+  // | parameter. It's there because Clean requires it.
+  weights :: problem chromosome -> [Weight]
 
 
 // Calculates the weighted product ratio. See
@@ -26,10 +30,9 @@ class Chromosome problem chromosome | == chromosome where
 // Left is better than right if the weighted product is > 1
 // Left is worse than right if the weighted product is < 1
 //
-// No weights yet, despite the name.
-//
 // The two objective lists must have the same length, and the same objectives at the same indices.
-weightedProduct :: [Objective] [Objective] -> Real
+// The list of weights also must have the same length
+weightedProduct :: [Objective] [Objective] [Weight] -> Real
 
 
 runGA ::

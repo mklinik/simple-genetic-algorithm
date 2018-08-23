@@ -82,7 +82,9 @@ nextGeneration gen pop ps mp problem env =
                 ]
             (_, []) -> abort "empty chunk")
         chunks
-    lst = take ps $ sortBy (\(_, fx) (_, fy) -> compareFitness fy fx) $ 'F'.concat results ++ oldPop
+    lst = take ps $
+      sortBy (\(lChrom, fx) (_, fy) -> compareFitness fy fx (weights problem lChrom)) $
+        'F'.concat results ++ oldPop
   in ( nub $ map fst lst, gen_ )
 
 nextGeneration_ [] _ _ acc _ = acc
@@ -99,10 +101,10 @@ nextGeneration_ [(p1,p2):ps] g0 mp acc problem =
 // Implements less-than.
 // Yields True if x is worse than y
 // Yields False if x is better than y
-compareFitness (Left x) (Left y) = weightedProduct x y < 1.0
-compareFitness (Left _) (Right _) = True
-compareFitness (Right _) (Left _) = False
-compareFitness (Right x) (Right y) = weightedProduct x y < 1.0
+compareFitness (Left x) (Left y) _ = weightedProduct x y (repeat 1.0) < 1.0
+compareFitness (Left _) (Right _) _ = True
+compareFitness (Right _) (Left _) _ = False
+compareFitness (Right x) (Right y) weights = weightedProduct x y weights < 1.0
 
 mutate :: RandomInts b a Real -> (a, RandomInts) | Chromosome b a
 mutate [rand:rands] problem x mp =
@@ -111,9 +113,9 @@ mutate [rand:rands] problem x mp =
     (mutation rands problem x)
     (x, rands)
 
-weightedProduct :: [Objective] [Objective] -> Real
-weightedProduct [] [] = 1.0
-weightedProduct [Maximize x : xs] [Maximize y : ys] = (x / y) * weightedProduct xs ys
-weightedProduct [Minimize x : xs] [Minimize y : ys] = (y / x) * weightedProduct xs ys
-weightedProduct [Undefined : xs] [Undefined : ys] = weightedProduct xs ys
-weightedProduct _ _ = abort "weightedProduct: inconsistent objective lists"
+weightedProduct :: [Objective] [Objective] [Weight] -> Real
+weightedProduct [] [] _ = 1.0
+weightedProduct [Maximize x : xs] [Maximize y : ys] [w:ws] = (x / y)^w * weightedProduct xs ys ws
+weightedProduct [Minimize x : xs] [Minimize y : ys] [w:ws] = (y / x)^w * weightedProduct xs ys ws
+weightedProduct [Undefined  : xs] [Undefined  : ys] [_:ws] = weightedProduct xs ys ws
+weightedProduct _ _ _ = abort "weightedProduct: inconsistent objective lists"
