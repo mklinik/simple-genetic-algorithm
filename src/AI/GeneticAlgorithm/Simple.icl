@@ -18,8 +18,8 @@ import AI.GeneticAlgorithm.RandomUtil
 import AI.GeneticAlgorithm.Environment
 
 instance toString Objective where
-  toString (Maximize x) = "⬆ " +++ toString x
-  toString (Minimize x) = "⬇ " +++ toString x
+  toString (Maximize x) = "x" +++ toString x
+  toString (Minimize x) = "i" +++ toString x
   toString Undefined = "?"
 
 runGA ::
